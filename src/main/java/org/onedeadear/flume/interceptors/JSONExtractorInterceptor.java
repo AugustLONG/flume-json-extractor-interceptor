@@ -12,12 +12,12 @@ import org.apache.log4j.Logger;
 
 public class JSONExtractorInterceptor implements Interceptor {
 
+    private static final Logger LOG = Logger.getLogger(JSONExtractorInterceptor.class);
+    
     private String jsonProperty;
 
-    private static final Logger LOG = Logger.getLogger(JSONExtractorInterceptor.class);
-
-    // private means that only Builder can build me.
-    private JSONExtractorInterceptor(String jsonProperty) {
+    
+    public JSONExtractorInterceptor(String jsonProperty) {
         this.jsonProperty = jsonProperty;
     }
 
@@ -27,12 +27,13 @@ public class JSONExtractorInterceptor implements Interceptor {
     @Override
     public Event intercept(Event event) {
 
-        // example: change body
-        JSONObject obj = new JSONObject(event.getBody());
-        String message = obj.getString(jsonProperty);
+        // Get the property from the body
+        String body = new String(event.getBody());
+        JSONObject obj = new JSONObject(body);
+        String extraction = obj.getString(jsonProperty);
 
         try {
-            event.setBody(message.getBytes("UTF-8"));
+            event.setBody(extraction.getBytes("UTF-8"));
         } catch (java.io.UnsupportedEncodingException e) {
             LOG.warn(e);
             // drop event completely
@@ -53,6 +54,7 @@ public class JSONExtractorInterceptor implements Interceptor {
     @Override
     public void close() {}
 
+
     public static class Builder implements Interceptor.Builder {
 
         private String jsonProperty;        
@@ -64,7 +66,7 @@ public class JSONExtractorInterceptor implements Interceptor {
 
         @Override
         public void configure(Context context) {
-            // Retrieve property from flume conf
+            // Retrieve property from flume agent configuration
             jsonProperty = context.getString("jsonProperty");
         }
     }
