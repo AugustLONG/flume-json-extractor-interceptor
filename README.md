@@ -20,11 +20,7 @@ sudo cp target/flume-json-extractor-interceptor-1.0.jar /usr/lib/flume-ng/plugin
 
 Copy the external [json library](https://github.com/douglascrockford/JSON-java)
 ```
-mvn org.apache.maven.plugins:maven-dependency-plugin:2.8:get \
-  -DgroupId=org.json \
-  -DartifactId=json \
-  -Dversion=20140107 \
-  -Dtransitive=false
+mvn -DgroupId=org.json -DartifactId=json -Dversion=20140107 -Ddest=json-20140107.jar dependency:get
 
 sudo mkdir -p /usr/lib/flume-ng/plugins.d/flume-json-extractor-interceptor/libext
 sudo cp json-20140107.jar /usr/lib/flume-ng/plugins.d/flume-json-extractor-interceptor/libext/
