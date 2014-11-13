@@ -49,9 +49,9 @@ a1.sources.r1.type = netcat
 a1.sources.r1.bind = localhost
 a1.sources.r1.port = 44444
 
-**a1.sources.r1.interceptors = i1**
-**a1.sources.r1.interceptors.i1.type = org.onedeadear.flume.interceptors.JSONExtractorInterceptor$Builder**
-**a1.sources.r1.interceptors.i1.jsonProperty = Result**
+a1.sources.r1.interceptors = i1
+a1.sources.r1.interceptors.i1.type = org.onedeadear.flume.interceptors.JSONExtractorInterceptor$Builder
+a1.sources.r1.interceptors.i1.jsonProperty = Result
 
 # Describe the sink
 a1.sinks.k1.type = logger
