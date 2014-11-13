@@ -18,7 +18,7 @@ sudo mkdir -p /usr/lib/flume-ng/plugins.d/flume-json-extractor-interceptor/lib
 sudo cp target/flume-json-extractor-interceptor-1.0.jar /usr/lib/flume-ng/plugins.d/flume-json-extractor-interceptor/lib/
 ```
 
-Copy the external json library
+Copy the external [json library](https://github.com/douglascrockford/JSON-java)
 ```
 mvn org.apache.maven.plugins:maven-dependency-plugin:2.8:get \
   -DgroupId=org.json \
