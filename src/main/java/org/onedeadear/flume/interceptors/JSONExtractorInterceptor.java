@@ -14,11 +14,13 @@ public class JSONExtractorInterceptor implements Interceptor {
 
     private static final Logger LOG = Logger.getLogger(JSONExtractorInterceptor.class);
     
-    private String jsonProperty;
-
+    private String _jsonProperty;
+    private OnError _onError;
     
-    public JSONExtractorInterceptor(String jsonProperty) {
-        this.jsonProperty = jsonProperty;
+    public JSONExtractorInterceptor(String jsonProperty, OnError onError) {
+        this._jsonProperty = jsonProperty;
+
+        this._onError = onError;
     }
 
     @Override
@@ -26,18 +28,18 @@ public class JSONExtractorInterceptor implements Interceptor {
 
     @Override
     public Event intercept(Event event) {
-
-        // Get the property from the body
-        String body = new String(event.getBody());
-        JSONObject obj = new JSONObject(body);
-        String extraction = obj.getString(jsonProperty);
-
         try {
+            // Get the property from the body
+            String body = new String(event.getBody());
+            JSONObject obj = new JSONObject(body);
+            String extraction = obj.getString(_jsonProperty);
+
             event.setBody(extraction.getBytes("UTF-8"));
-        } catch (java.io.UnsupportedEncodingException e) {
+        } catch (Exception e) {
             LOG.warn(e);
-            // drop event completely
-            return null;
+
+            if (_onError == OnError.DropEvent)
+                return null;
         }
 
         return event;
@@ -54,20 +56,28 @@ public class JSONExtractorInterceptor implements Interceptor {
     @Override
     public void close() {}
 
+    public enum OnError{
+        Continue,
+        DropEvent
+    }
 
     public static class Builder implements Interceptor.Builder {
 
-        private String jsonProperty;        
+        private String _jsonProperty;
+        private OnError _onError;
 
         @Override
         public Interceptor build() {
-            return new JSONExtractorInterceptor(jsonProperty);
+            return new JSONExtractorInterceptor(_jsonProperty, _onError);
         }
 
         @Override
         public void configure(Context context) {
             // Retrieve property from flume agent configuration
-            jsonProperty = context.getString("jsonProperty");
+            _jsonProperty = context.getString("jsonProperty");
+
+            String onError = context.getString("onError");
+            _onError = onError != null && !onError.isEmpty() ? OnError.valueOf(onError) : OnError.Continue;
         }
     }
 }
