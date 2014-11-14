@@ -30,10 +30,11 @@ sudo cp json-20140107.jar /usr/lib/flume-ng/plugins.d/flume-json-extractor-inter
 
 The following configuration properties are supported by the plugin. Required properties are in **bold**
 
- Property Name         | Default | Description
------------------------|---------|---------------------------------------------
- **type**              | -       | The component type name, needs to be *org.onedeadear.flume.interceptors.JSONExtractorInterceptor$Builder*
- jsonProperty          | -       | The property to extract
+ Property Name         | Default  | Description
+-----------------------|--------- |---------------------------------------------
+ **type**              | -        | The component type name, needs to be *org.onedeadear.flume.interceptors.JSONExtractorInterceptor$Builder*
+ **jsonProperty**      | -        | The property to extract
+ OnError               | Continue | What to do with the event if an error occurs when parsing. Options are **Continue** or **DropEvent**
 
 #### Example:
 
