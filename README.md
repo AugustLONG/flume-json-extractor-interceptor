@@ -34,7 +34,7 @@ The following configuration properties are supported by the plugin. Required pro
 -----------------------|--------- |---------------------------------------------
  **type**              | -        | The component type name, needs to be *org.onedeadear.flume.interceptors.JSONExtractorInterceptor$Builder*
  **jsonProperty**      | -        | The property to extract
- OnError               | Continue | What to do with the event if an error occurs when parsing. Options are **Continue** or **DropEvent**
+ onError               | Continue | What to do with the event if an error occurs when parsing. Options are **Continue** or **DropEvent**
 
 #### Example:
 
@@ -53,6 +53,7 @@ a1.sources.r1.port = 44444
 a1.sources.r1.interceptors = i1
 a1.sources.r1.interceptors.i1.type = org.onedeadear.flume.interceptors.JSONExtractorInterceptor$Builder
 a1.sources.r1.interceptors.i1.jsonProperty = Result
+a1.sources.r1.interceptors.i1.onError = DropEvent
 
 # Describe the sink
 a1.sinks.k1.type = logger
