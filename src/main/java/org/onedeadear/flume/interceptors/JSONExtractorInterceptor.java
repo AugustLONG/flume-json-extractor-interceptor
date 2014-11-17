@@ -1,5 +1,6 @@
 package org.onedeadear.flume.interceptors;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.*;
@@ -47,10 +48,16 @@ public class JSONExtractorInterceptor implements Interceptor {
 
     @Override
     public List<Event> intercept(List<Event> events) {
+        List<Event> interceptedEvents = new ArrayList<Event>();
+         
         for (Event event:events) {
-            intercept(event);
+            Event interceptedEvent = intercept(event);
+            
+            if (interceptedEvent != null){
+                interceptedEvents.add(interceptedEvent);
+            }
         }
-        return events;
+        return interceptedEvents;
     }
 
     @Override
